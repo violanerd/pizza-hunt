@@ -4,6 +4,12 @@ const pizzaController = {
     // GET /api/pizzas
     getAllPizza(req, res){
         Pizza.find({})
+            .populate({
+                path: 'comments',
+                select: '-__v'
+            })
+            .select('-__v')
+            .sort({ _id: -1 })
             .then(dbPizzaData => res.json(dbPizzaData))
             .catch(err => {
                 console.log(err);
@@ -12,6 +18,11 @@ const pizzaController = {
     },
     getPizzaById({ params }, res) {
         Pizza.findOne({ _id: params.id})// this code is destructuring params out of entire req
+            .populate({
+                path: 'comments',
+                select: '-__v'
+            })
+            .select('-__v')    
             .then(dbPizzaData => {
                 // if no Pizza is found, send 404
                 if (!dbPizzaData){
