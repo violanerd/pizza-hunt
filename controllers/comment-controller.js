@@ -42,6 +42,29 @@ const commentController = {
                 res.json(dbPizzaData)
             })
             .catch(err => res.status(400).json(err))
+    },
+    addReply({ params, body}, res){
+        Comment.findOneAndUpdate(
+            {_id: params.commentId}, 
+            {$push: {replies: body}}, 
+            {new:true})
+        .then(dbCommentData => {
+            if (!dbCommentData){
+                return res.status(404).json({ message: "Something went wrong "})
+            }
+            res.json(dbCommentData)
+        })
+        .catch(err => res.status(400).json(err))
+    },
+    removeReply({params}, res){
+        Comment.findOneAndUpdate({_id: params.commentId}, {$pull: {replies: { replyId: params.replyId}}}, {new: true})
+        .then(dbCommentData => {
+            if(!dbCommentData){
+                return res.status(404).json({ message: "Something went wrong "})
+            }
+            res.json(dbCommentData)
+        })
+        .catch(err => res.status(400).json(err))
     }
 }
 module.exports = commentController;
