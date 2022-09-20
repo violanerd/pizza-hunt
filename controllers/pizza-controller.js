@@ -44,7 +44,7 @@ const pizzaController = {
     },
     //PUT /api/pizzas/:id
     updatePizza({ params, body }, res){
-        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true }) // new: true parameter returns the new document
+        Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true }) // new: true parameter returns the new document
             .then(dbPizzaData => {
                 if (!dbPizzaData){
                     res.status(404).json({ message: 'No Pizza found with this id!'})

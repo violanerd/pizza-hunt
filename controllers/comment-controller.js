@@ -47,7 +47,7 @@ const commentController = {
         Comment.findOneAndUpdate(
             {_id: params.commentId}, 
             {$push: {replies: body}}, 
-            {new:true})
+            {new:true, runValidators: true})
         .then(dbCommentData => {
             if (!dbCommentData){
                 return res.status(404).json({ message: "Something went wrong "})

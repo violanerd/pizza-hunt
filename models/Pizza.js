@@ -1,12 +1,16 @@
-const { Schema, model, SchemaTypes } = require('mongoose');
+const { Schema, model } = require('mongoose');
 const dateFormat = require("../utils/dateFormat")
 
 const PizzaSchema = new Schema({
     pizzaName: {
-        type: String
+        type: String,
+        required: "Enter a pizza name please!",
+        trim: true
     },
     createdBy: {
-        type: String
+        type: String,
+        required: "Please tell me who made it!",
+        trim: true
     },
     createdAt: {
         type: Date,
@@ -15,6 +19,8 @@ const PizzaSchema = new Schema({
     },
     size: {
         type: String,
+        required: true,
+        enum: ['Personal', 'Small', 'Medium', 'Large', 'Extra Large'],
         default: 'Large'
     },
     toppings: [],
@@ -30,6 +36,7 @@ const PizzaSchema = new Schema({
         virtuals: true,
         getters: true
     },
+    // prevents virtuals from creating duplicate of _id as `id`
     id: false
 })
 PizzaSchema.virtual('commentCount').get(function(){
