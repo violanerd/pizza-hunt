@@ -6,7 +6,7 @@ const commentController = {
         console.log(body)
         Comment.create(body)
             .then(({_id }) => {
-                console.log(_id)
+                console.log("this is the id", _id)
                 return Pizza.findOneAndUpdate(
                     {_id: params.pizzaId},
                     { $push: { comments: _id }},
@@ -18,9 +18,13 @@ const commentController = {
                     res.status(404).json({ message: "No Pizza found"})
                     return
                 }
+                console.log("I am adter the no data check")
                 res.json(dbPizzaData)
             }) 
-            .catch(err => res.status(400).json(err))
+            .catch(err => {
+                console.log('err', err)
+                res.status(400).json(err)
+            })
     },
     removeComment({ params }, res){
         Comment.findOneAndDelete({ _id: params.commentId})
